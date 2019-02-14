@@ -4,37 +4,14 @@
 {{template "nav.tmpl.html"}}
 
 <div class="container">
-    <!-- <div class="alert alert-info text-center" role="alert">
-        To deploy your own copy, and learn the fundamentals of the Heroku platform, head over to the <a href="https://devcenter.heroku.com/articles/getting-started-with-go" class="alert-link">Getting Started with Go on Heroku</a> tutorial.
-    </div> <hr> -->
     <div class="row">
-        <div class="col-md-6">
-            <h3><span class="glyphicon glyphicon-log-in"></span> Join the queue!</h3>
-            <form method="post" action="/join">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Your name</label>
-                    <input type="text" class="form-control" id="name"
-                           placeholder="First and last name">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">UBC CS ID</label>
-                    <input type="text" class="form-control" id="csid"
-                           placeholder="For instance, a1b1c1" maxlength="5">
-                </div>
-                <button type="submit" class="btn btn-primary">Join the queue</button>
-            </form>
-
-        </div>
-        <div class="col-md-6">
-            <h3><span class="glyphicon glyphicon-info-sign"></span> What is this tool for?</h3>
-            <p>Long gone are the days of writing your name on a whiteboard, and hoping that a TA would eventually show
-                up.</p>
-            <p>This tool lets you sign up for TA help during scheduled labs and office hours. Labs in CPSC 210 operate
-                on a
-                first-come, first-served basis, however we will give priority to students who have not received help
-                from a
-                course staff member yet.</p>
-            <p>To join the queue, please fill the form on this page.</p>
+        <div class="col-md-12">
+            <h3><span class="glyphicon glyphicon-log-in"></span> You have joined the queue.</h3>
+            <p>Good job. You successfully joined the queue at {{.JoinedAt}}. There are {{.AheadOfMe}} other students
+                before you.</p>
+            {{if .HasEstimate -}}
+                <p>Your estimated wait time is {{.EstimatedWaitTime}}.</p>
+            {{- end}}
         </div>
         <hr/>
     </div>

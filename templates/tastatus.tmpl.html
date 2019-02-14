@@ -6,23 +6,32 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3><span class="glyphicon glyphicon-list"></span> Current queue status</h3>
+            <h3><span class="glyphicon glyphicon-tower"></span> TA admin panel</h3>
             <table class="table">
                 <thead>
                 <tr>
+                    <th scope="col">&nbsp;</th>
                     <th scope="col">#</th>
                     <th scope="col">CSid</th>
                     <th scope="col">Name</th>
                     <th scope="col">Joined at</th>
+                    <th scope="col">Times helped</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{- range .Entries }}
                     <tr>
+                        <td>
+                            <form action="/served" method="post">
+                                <input type="hidden" name="csid" value="{{ .CSid }}">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Now Serving"/>
+                            </form>
+                        </td>
                         <th scope="row">1</th>
                         <td>{{ .CSid }}</td>
                         <td>{{ .Name }}</td>
                         <td>{{ .JoinedAt}}</td>
+                        <td>{{ .CSid | NumTimesHelped}}</td>
                     </tr>
                 {{- end}}
                 </tbody>

@@ -6,12 +6,27 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3><span class="glyphicon glyphicon-log-in"></span> You have joined the queue.</h3>
-            <p>Good job. You successfully joined the queue at {{.JoinedAt}}. There are {{.AheadOfMe}} other students
-                before you.</p>
-            {{if .HasEstimate -}}
-                <p>Your estimated wait time is {{.EstimatedWaitTime}}.</p>
-            {{- end}}
+            <h3><span class="glyphicon glyphicon-list"></span> Current queue status</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">CSid</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Joined at</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{- range .Entries }}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{ .CSid }}</td>
+                        <td>{{ .Name }}</td>
+                        <td>{{ .JoinedAt}}</td>
+                    </tr>
+                {{- end}}
+                </tbody>
+            </table>
         </div>
         <hr/>
     </div>
