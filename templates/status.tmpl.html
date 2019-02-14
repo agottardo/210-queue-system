@@ -1,0 +1,22 @@
+<html>
+{{template "header.tmpl.html"}}
+<body>
+{{template "nav.tmpl.html"}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3><span class="glyphicon glyphicon-log-in"></span> You have joined the queue.</h3>
+            <p>Good job. You successfully joined the queue at {{.JoinedAt}}. There are {{.AheadOfMe}} other students
+                before you.</p>
+            {{if .HasEstimate -}}
+                <p>Your estimated wait time is {{.EstimatedWaitTime}}.</p>
+            {{- end}}
+        </div>
+        <hr/>
+    </div>
+    <hr/><!-- row -->
+</div>
+
+</body>
+</html>

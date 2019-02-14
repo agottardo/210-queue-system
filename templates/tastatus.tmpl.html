@@ -1,0 +1,37 @@
+<html>
+{{template "header.tmpl.html"}}
+<body>
+{{template "nav.tmpl.html"}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3><span class="glyphicon glyphicon-list"></span> Current queue status</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">CSid</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Joined at</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{- range .Entries }}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{ .CSid }}</td>
+                        <td>{{ .Name }}</td>
+                        <td>{{ .JoinedAt}}</td>
+                    </tr>
+                {{- end}}
+                </tbody>
+            </table>
+        </div>
+        <hr/>
+    </div>
+    <hr/><!-- row -->
+</div>
+
+</body>
+</html>
