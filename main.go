@@ -32,8 +32,11 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 	router.GET("/status", handleStatus)
-	router.GET("/ta", handleTAStatus)
-	router.POST("/served", handleServed)
+	authorized := router.Group("/", gin.BasicAuth(gin.Accounts{
+		"210ta": "210ta",
+	}))
+	authorized.GET("/ta", handleTAStatus)
+	authorized.POST("/served", handleServed)
 	router.POST("/join", handleJoinReq)
 	router.Run(":" + port)
 }
