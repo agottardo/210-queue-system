@@ -38,7 +38,7 @@ func main() {
 	}))
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
-	authorized.GET("/nuke", handleNuke)
+	authorized.POST("/nuke", handleNuke)
 	router.POST("/join", handleJoinReq)
 	router.Run(":" + port)
 }
@@ -74,7 +74,7 @@ func handleStatus(c *gin.Context) {
 }
 
 func handleNuke(c *gin.Context) {
-	confirm := c.Request.URL.Query().Get("confirm")
+	confirm, _ := c.GetPostForm("confirm")
 	if confirm == "true" {
 		NukeAllTheThings(c.Request.RemoteAddr)
 		c.JSON(http.StatusAccepted, gin.H{
