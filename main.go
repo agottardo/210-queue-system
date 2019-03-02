@@ -39,6 +39,7 @@ func main() {
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
 	authorized.POST("/nuke", handleNuke)
+	authorized.GET("/jsondump", handleDump)
 	router.POST("/join", handleJoinReq)
 	router.Run(":" + port)
 }
@@ -103,4 +104,8 @@ func handleServed(c *gin.Context) {
 	}
 	ServeStudent(csid)
 	handleTAStatus(c)
+}
+
+func handleDump(c *gin.Context) {
+	c.File("persistence.json")
 }
