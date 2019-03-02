@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	"os"
 	"sync"
 	"time"
 )
@@ -109,4 +111,14 @@ func NumTimesHelped(CSid string) int {
 	}
 	queue.Mutex.Unlock()
 	return acc
+}
+
+// Deletes the persistence file and starts the queue from scratch. To be used by TAs only.
+func NukeAllTheThings(ip string) {
+	log.Println("User @", ip, "asked for database deletion. Will do.")
+	queue = Queue{Entries: []QueueEntry{}}
+	err := os.Remove("persistence.json")
+	if err != nil {
+		log.Println("Unable to delete persistence.json", err)
+	}
 }

@@ -38,6 +38,7 @@ func main() {
 	}))
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
+	authorized.GET("/nuke", handleNuke)
 	router.POST("/join", handleJoinReq)
 	router.Run(":" + port)
 }
@@ -70,6 +71,23 @@ func handleJoinReq(c *gin.Context) {
 func handleStatus(c *gin.Context) {
 	spv := StatusPageValues{UnservedEntries()}
 	c.HTML(http.StatusOK, "status.tmpl.html", spv)
+}
+
+func handleNuke(c *gin.Context) {
+	confirm := c.Request.URL.Query().Get("confirm")
+	if confirm == "true" {
+		NukeAllTheThings(c.Request.RemoteAddr)
+		c.JSON(http.StatusAccepted, gin.H{
+			"success": true,
+			"nukedDatabase": true,
+		})
+		return
+	} else {
+		c.JSON(http.StatusAccepted, gin.H{
+			"success": false,
+			"nukedDatabase": false,
+		})
+	}
 }
 
 func handleTAStatus(c *gin.Context) {
