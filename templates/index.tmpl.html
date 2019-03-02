@@ -14,14 +14,19 @@
             <h3><span class="glyphicon glyphicon-log-in"></span> Join the queue!</h3>
             <form method="post" action="/join">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Your name</label>
+                    <label for="name">Your name</label>
                     <input type="text" class="form-control" id="name" name="name"
-                           placeholder="First and last name">
+                           placeholder="First name" required>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">UBC CS ID</label>
+                    <label for="csid">UBC CS ID</label>
                     <input type="text" class="form-control" id="csid" name="csid"
-                           placeholder="For instance, a1b1c1" maxlength="5">
+                           placeholder="For instance, 'a1b1c1'" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                    <label for="task">What do you need help with?</label>
+                    <input type="text" class="form-control" id="task" name="task"
+                           placeholder="For instance, 'Task 2 - parsing'" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Join the queue</button>
             </form>

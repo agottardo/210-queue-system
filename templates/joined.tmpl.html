@@ -7,11 +7,12 @@
     <div class="row">
         <div class="col-md-12">
             <h3><span class="glyphicon glyphicon-log-in"></span> You have joined the queue.</h3>
-            <p>Good job. You successfully joined the queue at {{.JoinedAt}}. There are {{.AheadOfMe}} other students
+            <p>You successfully joined the queue. A TA will call your name once it's your turn. There are currently {{.AheadOfMe}} other students
                 before you.</p>
             {{if .HasEstimate -}}
                 <p>Your estimated wait time is {{.EstimatedWaitTime}}.</p>
             {{- end}}
+            <a class="btn btn-primary" href="/status" role="button">Click here to see your place in the queue</a>
         </div>
         <hr/>
     </div>

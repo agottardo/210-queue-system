@@ -8,6 +8,7 @@ import (
 type QueueEntry struct {
 	CSid      string
 	Name      string
+	TaskInfo  string
 	JoinedAt  time.Time
 	WasServed bool
 	ServedAt  time.Time
@@ -43,8 +44,8 @@ func EstimatedWaitTime() float64 {
 // Adds the student with name and CSid to the queue.
 // Returns how many students are ahead of the new student in the queue,
 // and the estimated wait time in seconds.
-func JoinQueue(name string, CSid string) (int, int) {
-	entry := QueueEntry{CSid, name, time.Now(), false, time.Now()}
+func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
+	entry := QueueEntry{CSid, name, taskInfo, time.Now(), false, time.Now()}
 	queue.Mutex.Lock()
 	// How many un-served students joined before me?
 	rsf := 0
@@ -95,18 +96,6 @@ func UnservedEntries() []QueueEntry {
 	return acc
 }
 
-func TAEntries() []QueueEntry {
-	acc := []QueueEntry{}
-	queue.Mutex.Lock()
-	for _, entry := range queue.Entries {
-		if !entry.WasServed {
-			acc = append(acc, entry)
-		}
-	}
-	queue.Mutex.Unlock()
-	return acc
-}
-
 func NumTimesHelped(CSid string) int {
 	acc := 0
 	queue.Mutex.Lock()
@@ -136,6 +125,7 @@ type JoinedPageValues struct {
 	HasEstimate       bool
 	EstimatedWaitTime string
 	JoinedAt          string
+	Name              string
 }
 
 type StatusPageValues struct {

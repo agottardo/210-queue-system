@@ -1,15 +1,16 @@
 package main
 
 import (
+	"github.com/dustin/go-humanize"
+	_ "github.com/dustin/go-humanize"
+	"github.com/gin-gonic/gin"
+	_ "github.com/heroku/x/hmetrics/onload"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
-
-	"github.com/gin-gonic/gin"
-	_ "github.com/heroku/x/hmetrics/onload"
 )
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
 	router.Delims("{{", "}}")
 	router.SetFuncMap(template.FuncMap{
 		"NumTimesHelped": NumTimesHelped,
+		"RelativeTime":   humanize.Time,
 	})
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
@@ -44,22 +46,24 @@ func main() {
 func handleJoinReq(c *gin.Context) {
 	name := c.PostForm("name")
 	CSid := c.PostForm("csid")
+	taskInfo := c.PostForm("task")
 	if !IsValidCSid(CSid) || name == "" {
 		hpv := HomePageValues{Error: "Invalid name or CS ID entered."}
 		c.HTML(http.StatusOK, "index.tmpl.html", hpv)
 		return
 	}
 	if HasJoinedQueue(CSid) {
-		hpv := HomePageValues{Error: "You have already joined the queue!"}
+		hpv := HomePageValues{Error: "You have already joined the queue! Click above to see your status."}
 		c.HTML(http.StatusOK, "index.tmpl.html", hpv)
 		return
 	}
-	aheadOfMe, waitTime := JoinQueue(name, CSid)
+	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
 	jpv := JoinedPageValues{
 		AheadOfMe:         strconv.Itoa(aheadOfMe),
 		HasEstimate:       waitTime != 0,
 		EstimatedWaitTime: strconv.Itoa(waitTime) + " seconds",
 		JoinedAt:          time.Now().String(),
+		Name:              name,
 	}
 	c.HTML(http.StatusOK, "joined.tmpl.html", jpv)
 }
