@@ -55,6 +55,7 @@ func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
 		}
 	}
 	queue.Entries = append(queue.Entries, entry)
+	UpdateDiskCopy()
 	queue.Mutex.Unlock()
 	return rsf, int(EstimatedWaitTime())
 }
@@ -81,6 +82,7 @@ func ServeStudent(CSid string) {
 			queue.Entries[i].WasServed = true
 		}
 	}
+	UpdateDiskCopy()
 	queue.Mutex.Unlock()
 }
 
@@ -96,38 +98,15 @@ func UnservedEntries() []QueueEntry {
 	return acc
 }
 
+// Returns the number of times the given CSid was helped in the last 12 hours.
 func NumTimesHelped(CSid string) int {
 	acc := 0
 	queue.Mutex.Lock()
 	for _, entry := range queue.Entries {
-		if entry.CSid == CSid {
+		if entry.CSid == CSid && entry.WasServed && entry.ServedAt.After(time.Now().AddDate(0, 0, -1)) {
 			acc++
 		}
 	}
 	queue.Mutex.Unlock()
 	return acc
-}
-
-// TODO: actual pattern matching letter-number-letter-number...
-func IsValidCSid(id string) bool {
-	if len(id) != 4 && len(id) != 5 {
-		return false
-	}
-	return true
-}
-
-type HomePageValues struct {
-	Error string
-}
-
-type JoinedPageValues struct {
-	AheadOfMe         string
-	HasEstimate       bool
-	EstimatedWaitTime string
-	JoinedAt          string
-	Name              string
-}
-
-type StatusPageValues struct {
-	Entries []QueueEntry
 }

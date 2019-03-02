@@ -2,9 +2,7 @@ package main
 
 import (
 	"github.com/dustin/go-humanize"
-	_ "github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
-	_ "github.com/heroku/x/hmetrics/onload"
 	"html/template"
 	"log"
 	"net/http"
@@ -15,10 +13,11 @@ import (
 
 func main() {
 	port := os.Getenv("PORT")
-
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
+
+	LoadDataFromDisk()
 
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -61,7 +60,7 @@ func handleJoinReq(c *gin.Context) {
 	jpv := JoinedPageValues{
 		AheadOfMe:         strconv.Itoa(aheadOfMe),
 		HasEstimate:       waitTime != 0,
-		EstimatedWaitTime: strconv.Itoa(waitTime) + " seconds",
+		EstimatedWaitTime: strconv.Itoa(waitTime/60) + " minutes",
 		JoinedAt:          time.Now().String(),
 		Name:              name,
 	}
