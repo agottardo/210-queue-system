@@ -10,9 +10,9 @@ import (
 // This file contains the logic for our application.
 // See persistence.go for disk (JSON) storage.
 
-// A ticket in the Queue. A user can have multiple tickets, but only one
-// has WasServed set to true. We store all tickets so that we can compute
-// statistics if necessary by parsing the persistence.json file.
+// A QueueEntry represents a ticket in the Queue. A user can have multiple
+// tickets, but only one has WasServed set to true. We store all tickets
+// so that we can compute statistics later by parsing the persistence.json file.
 type QueueEntry struct {
 	CSid      string
 	Name      string
@@ -22,6 +22,7 @@ type QueueEntry struct {
 	ServedAt  time.Time
 }
 
+// Queue is the underlying thread-safe data structure (mutex + queue).
 type Queue struct {
 	Mutex   sync.Mutex   // To handle concurrency, prevents multiple users from touching the DS.
 	Entries []QueueEntry // Contains the actual tickets.
@@ -30,7 +31,7 @@ type Queue struct {
 // Main in-memory data structure.
 var queue = Queue{Entries: []QueueEntry{}}
 
-// Adds the student with name and CSid to the queue.
+// JoinQueue adds the student with name and CSid to the queue.
 // Returns how many students are ahead of the new student in the queue,
 // and the estimated wait time in seconds.
 func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
@@ -49,7 +50,7 @@ func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
 	return rsf, int(EstimatedWaitTime())
 }
 
-// Returns true if the user with given CSid has joined the queue
+// HasJoinedQueue returns true if the user with given CSid has joined the queue
 // and has not been served yet.
 func HasJoinedQueue(CSid string) bool {
 	queue.Mutex.Lock()
@@ -63,7 +64,7 @@ func HasJoinedQueue(CSid string) bool {
 	return false
 }
 
-// Marks the student with given CSid as served.
+// ServeStudent marks the student with given CSid as served.
 func ServeStudent(CSid string) {
 	queue.Mutex.Lock()
 	for i, entry := range queue.Entries {
@@ -78,7 +79,7 @@ func ServeStudent(CSid string) {
 	queue.Mutex.Unlock()
 }
 
-// Returns all tickets that have not been served yet.
+// UnservedEntries returns all tickets that have not been served yet.
 func UnservedEntries() []QueueEntry {
 	acc := []QueueEntry{}
 	queue.Mutex.Lock()
@@ -91,7 +92,7 @@ func UnservedEntries() []QueueEntry {
 	return acc
 }
 
-// Returns the number of times the given CSid was helped in the last 12 hours.
+// NumTimesHelped returns the number of times the given CSid was helped in the last 12 hours.
 func NumTimesHelped(CSid string) int {
 	acc := 0
 	queue.Mutex.Lock()
@@ -104,7 +105,7 @@ func NumTimesHelped(CSid string) int {
 	return acc
 }
 
-// Returns the estimated wait time in seconds for a students that joins the
+// EstimatedWaitTime returns the estimated wait time in seconds for a students that joins the
 // queue right now.
 func EstimatedWaitTime() float64 {
 	var acc time.Duration
@@ -125,7 +126,8 @@ func EstimatedWaitTime() float64 {
 	return acc.Seconds() / float64(count)
 }
 
-// Deletes the persistence file and starts the queue from scratch. To be used by TAs only.
+// NukeAllTheThings deletes the persistence file and starts the queue from scratch.
+// To be used by TAs only.
 func NukeAllTheThings(ip string) {
 	log.Println("User @", ip, "asked for database deletion. Will do.")
 	queue = Queue{Entries: []QueueEntry{}}

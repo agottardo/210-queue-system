@@ -6,7 +6,9 @@ import (
 	"log"
 )
 
-// Handles persistence to local .json file.
+// LoadDataFromDisk fills the in-memory data structure by reading
+// the persistence.json file. To be called when booting/restarting
+// the application.
 func LoadDataFromDisk() {
 	// Restore data from disk storage before running (persistence.json).
 	jsonStore, err := ioutil.ReadFile("persistence.json")
@@ -27,9 +29,12 @@ func LoadDataFromDisk() {
 	}
 }
 
+// UpdateDiskCopy converts the data structure to a JSON file
+// and saves it to disk. The caller of this function should
+// have locked the mutex before calling it.
 func UpdateDiskCopy() {
-	queueJson, _ := json.Marshal(queue)
-	err := ioutil.WriteFile("persistence.json", queueJson, 0644)
+	queueJSON, _ := json.Marshal(queue)
+	err := ioutil.WriteFile("persistence.json", queueJSON, 0644)
 	if err != nil {
 		log.Println(err)
 		return

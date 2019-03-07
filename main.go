@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/dustin/go-humanize"
-	"github.com/gin-gonic/gin"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/dustin/go-humanize"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -41,7 +42,10 @@ func main() {
 	authorized.POST("/nuke", handleNuke)
 	authorized.GET("/jsondump", handleDump)
 	router.POST("/join", handleJoinReq)
-	router.Run(":" + port)
+	err := router.Run(":" + port)
+	if err != nil {
+		log.Fatalln("Listening on port failed with error:", err)
+	}
 }
 
 func handleJoinReq(c *gin.Context) {
@@ -79,16 +83,15 @@ func handleNuke(c *gin.Context) {
 	if confirm == "true" {
 		NukeAllTheThings(c.Request.RemoteAddr)
 		c.JSON(http.StatusAccepted, gin.H{
-			"success": true,
+			"success":       true,
 			"nukedDatabase": true,
 		})
 		return
-	} else {
-		c.JSON(http.StatusAccepted, gin.H{
-			"success": false,
-			"nukedDatabase": false,
-		})
 	}
+	c.JSON(http.StatusAccepted, gin.H{
+		"success":       false,
+		"nukedDatabase": false,
+	})
 }
 
 func handleTAStatus(c *gin.Context) {
