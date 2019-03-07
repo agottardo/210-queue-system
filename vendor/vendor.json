@@ -101,6 +101,12 @@
 			"revisionTime": "2019-02-04T20:13:41Z"
 		},
 		{
+			"checksumSHA1": "OC4afQqPhpTnJAXmsMEhKLgIlYg=",
+			"path": "github.com/yl2chen/cidranger",
+			"revision": "928b519e5268fe386d0f7decce320205cc09ca95",
+			"revisionTime": "2018-02-14T08:18:26Z"
+		},
+		{
 			"checksumSHA1": "hKZGpbFuCrkE4s1vxubKK1aFlfI=",
 			"path": "golang.org/x/net/context",
 			"revision": "d9558e5c97f85372afee28cf2b6059d7d3818919"
@@ -130,5 +136,5 @@
 			"revisionTime": "2018-11-15T11:05:04Z"
 		}
 	],
-	"rootPath": "github.com/heroku/go-getting-started"
+	"rootPath": "github.com/agottardo/210-queue-system"
 }
