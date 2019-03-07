@@ -1,4 +1,4 @@
-package main
+package ubcipfilter
 
 import (
 	"github.com/yl2chen/cidranger"
