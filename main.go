@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-gonic/autotls"
 	"html/template"
 	"log"
 	"net/http"
@@ -42,10 +43,7 @@ func main() {
 	authorized.POST("/nuke", handleNuke)
 	authorized.GET("/jsondump", handleDump)
 	router.POST("/join", handleJoinReq)
-	err := router.Run(":" + port)
-	if err != nil {
-		log.Fatalln("Listening on port failed with error:", err)
-	}
+	log.Fatal(autotls.Run(router, "cpsc210queue.ugrad.cs.ubc.ca"))
 }
 
 func handleJoinReq(c *gin.Context) {

@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32ac8e8c-7361-4ba0-99c8-1bf14d769702" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/Gopkg.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/Gopkg.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/LICENSE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/brute.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/cidranger.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/trie.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/github.com/yl2chen/cidranger/version.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ipfilter.go" beforeDir="false" afterPath="$PROJECT_DIR$/ipfilter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vendor/vendor.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/vendor.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,15 +18,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pagevalues.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="300">
@@ -43,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1002">
-              <caret line="87" column="10" selection-start-line="87" selection-start-column="10" selection-end-line="87" selection-end-column="10" />
+            <state relative-caret-position="300">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="e#14#147#0" expanded="true" />
               </folding>
@@ -55,11 +38,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ipfilter.go">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ubcipfilter/ipfilter.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="33" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="33" />
+            <state relative-caret-position="915">
+              <caret line="66" column="18" selection-start-line="66" selection-start-column="18" selection-end-line="66" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ubcipfilter/ipfilter_test.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
+              <folding>
+                <element signature="e#21#49#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -67,7 +62,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file:///usr/local/Cellar/go/1.12/libexec/src/net/lookup.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state relative-caret-position="6600">
               <caret line="445" column="5" selection-start-line="445" selection-start-column="5" selection-end-line="445" selection-end-column="5" />
             </state>
           </provider>
@@ -76,7 +71,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../yl2chen/cidranger/cidranger.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
+            <state relative-caret-position="1125">
               <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
             </state>
           </provider>
@@ -94,11 +89,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classy_integration.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="630">
               <caret line="47" column="28" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
-              <folding>
-                <element signature="e#14#43#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -106,7 +98,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/persistence.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
+            <state relative-caret-position="240">
               <caret line="20" column="28" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
               <folding>
                 <element signature="e#14#61#0" expanded="true" />
@@ -157,10 +149,10 @@
         <option value="$PROJECT_DIR$/templates/status.tmpl.html" />
         <option value="$PROJECT_DIR$/templates/tastatus.tmpl.html" />
         <option value="$PROJECT_DIR$/util.go" />
-        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/model.go" />
         <option value="$PROJECT_DIR$/classy_integration.go" />
         <option value="$PROJECT_DIR$/ipfilter.go" />
+        <option value="$PROJECT_DIR$/main.go" />
       </list>
     </option>
   </component>
@@ -180,6 +172,11 @@
             <path>
               <item name="210-queue-system" type="b2602c69:ProjectViewProjectNode" />
               <item name="210-queue-system" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="210-queue-system" type="b2602c69:ProjectViewProjectNode" />
+              <item name="210-queue-system" type="462c0819:PsiDirectoryNode" />
+              <item name="ubcipfilter" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -247,8 +244,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2639485" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27110156" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -426,7 +424,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/persistence.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
+        <state relative-caret-position="240">
           <caret line="20" column="28" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
           <folding>
             <element signature="e#14#61#0" expanded="true" />
@@ -443,21 +441,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classy_integration.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
+        <state relative-caret-position="630">
           <caret line="47" column="28" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
-          <folding>
-            <element signature="e#14#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1002">
-          <caret line="87" column="10" selection-start-line="87" selection-start-column="10" selection-end-line="87" selection-end-column="10" />
-          <folding>
-            <element signature="e#14#147#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -470,22 +455,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../yl2chen/cidranger/cidranger.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
+        <state relative-caret-position="1125">
           <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/local/Cellar/go/1.12/libexec/src/net/lookup.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="6600">
           <caret line="445" column="5" selection-start-line="445" selection-start-column="5" selection-end-line="445" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ipfilter.go">
+    <entry file="file://$PROJECT_DIR$/ipfilter.go" />
+    <entry file="file://$PROJECT_DIR$/ubcipfilter/ipfilter_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="33" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="33" />
+        <state relative-caret-position="330">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#21#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="e#14#147#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -15,6 +15,12 @@
 			"revisionTime": "2019-01-25T02:09:43Z"
 		},
 		{
+			"checksumSHA1": "qSCLXOoVuF4gqsxwhrR9eyEMOqk=",
+			"path": "github.com/gin-gonic/autotls",
+			"revision": "0b5f4fc15768a919a40d099fab9c397a704dcecd",
+			"revisionTime": "2019-01-19T12:56:36Z"
+		},
+		{
 			"checksumSHA1": "tBxmhWWb6s+36rX0p1h7K1e4phI=",
 			"comment": "v1.0rc1-110-g4cc2de6",
 			"path": "github.com/gin-gonic/gin",
