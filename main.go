@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 
@@ -13,10 +12,7 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Fatal("$PORT must be set")
-	}
+	port := "8888"
 
 	LoadDataFromDisk()
 
