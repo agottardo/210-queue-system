@@ -92,7 +92,7 @@ func UnservedEntries() []QueueEntry {
 	return acc
 }
 
-// NumTimesHelped returns the number of times the given CSid was helped in the last 12 hours.
+// NumTimesHelped returns the number of times the given CSid was helped in the last 24 hours.
 func NumTimesHelped(CSid string) int {
 	acc := 0
 	queue.Mutex.Lock()

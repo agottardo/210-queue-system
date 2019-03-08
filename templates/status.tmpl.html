@@ -33,14 +33,12 @@
     }
 
     function fillPosition() {
-        console.log("fillPosition");
         var xhr = new XMLHttpRequest();
         var url = "/status_for_id";
-        console.log("done");
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
-            console.log("INSIDE");
+            console.log("Loaded status from server.");
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
                 if (json.success === true) {

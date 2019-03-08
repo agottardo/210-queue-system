@@ -2,22 +2,21 @@
 {{template "header.tmpl.html"}}
 <body>
 {{template "nav.tmpl.html"}}
-
+<meta http-equiv="refresh" content="10"/>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <h3><i class="fas fa-user-md"></i> TA admin panel</h3>
-            <a class="btn btn-default btn-primary pull-right" href="/ta" role="button"><i class="fas fa-sync-alt"></i> Refresh</a>
+
 
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">&nbsp;</th>
-                    <th scope="col">CSid</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Name [CSid]</th>
                     <th scope="col">Task</th>
-                    <th scope="col">Joined at</th>
-                    <th scope="col">Times helped (past 24 hrs)</th>
+                    <th scope="col">Joined</th>
+                    <th scope="col"># helped (24 hrs)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,11 +25,12 @@
                         <td>
                             <form action="/served" method="post">
                                 <input type="hidden" name="csid" value="{{ .CSid }}">
-                                <input type="submit" class="btn btn-primary btn-sm" value="Now Serving"/>
+                                <button type="submit" class="btn btn-success btn-xs"><i
+                                            class="fas fa-hands-helping"></i> Now Serving
+                                </button>
                             </form>
                         </td>
-                        <td>{{ .CSid }}</td>
-                        <td>{{ .Name }}</td>
+                        <td>{{ .Name }} [{{ .CSid }}]</td>
                         <td>{{ .TaskInfo }}</td>
                         <td>{{ .JoinedAt | RelativeTime}}</td>
                         <td>{{ .CSid | NumTimesHelped}}</td>
@@ -38,8 +38,12 @@
                 {{- end}}
                 </tbody>
             </table>
+            <div align="center">
+                <a class="btn btn-default btn-primary btn-xs" href="/ta" role="button"><i
+                            class="fas fa-sync-alt"></i>
+                    Force refresh</a>
+            </div>
         </div>
-        <hr/>
     </div>
     <hr/><!-- row -->
 </div>
