@@ -136,3 +136,17 @@ func NukeAllTheThings(ip string) {
 		log.Println("Unable to delete persistence.json", err)
 	}
 }
+
+// QueuePositionForCSID returns whether the given CSid is waiting in the queue,
+// and their position.
+func QueuePositionForCSID(CSid string) (bool, uint) {
+	entries := UnservedEntries()
+	var acc uint = 0
+	for _, entry := range entries {
+		if entry.CSid == CSid {
+			return true, acc
+		}
+		acc++
+	}
+	return false, 0
+}

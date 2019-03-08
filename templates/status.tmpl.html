@@ -3,34 +3,101 @@
 <body>
 {{template "nav.tmpl.html"}}
 
+<script type="text/javascript">
+
+    function deleteCookie(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var username = getCookie("queue-csid");
+        if (username !== "") {
+            fillPosition();
+        }
+    }
+
+    function fillPosition() {
+        console.log("fillPosition");
+        var xhr = new XMLHttpRequest();
+        var url = "/status_for_id";
+        console.log("done");
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            console.log("INSIDE");
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                if (json.success === true) {
+                    document.getElementById("notwaiting").hidden = true;
+                    document.getElementById("currentstatus").hidden = false;
+                    document.getElementById("csid").innerText = json.csid;
+                    document.getElementById("position").innerText = json.position;
+                    document.getElementById("waittime").innerText = json.waittime;
+                } else {
+                    document.getElementById("notwaiting").hidden = false;
+                    document.getElementById("currentstatus").hidden = true;
+                    clearInterval();
+                    deleteCookie("queue-csid");
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    checkCookie();
+    window.setInterval(function () {
+        checkCookie();
+    }, 5000);
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3><i class="fas fa-list-ol"></i> Current queue status</h3>
-            <meta http-equiv="refresh" content="30">
-            <a class="btn btn-default btn-primary pull-right" href="/status" role="button"><i class="fas fa-sync-alt"></i> Refresh</a>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">CSid</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Joined</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{- range .Entries }}
-                    <tr>
-                        <td>{{ .CSid }}</td>
-                        <td>{{ .Name }}</td>
-                        <td>{{ .JoinedAt | RelativeTime}}</td>
-                    </tr>
-                {{- end}}
-                </tbody>
-            </table>
+            <h3><i class="fas fa-list-ol"></i> Your position in the queue</h3>
+            <br/>
+            <div class="panel panel-danger" id="notwaiting">
+                <div class="panel-heading">
+                    <h3 class="panel-title">You're not in the queue.</h3>
+                </div>
+                <div class="panel-body">
+                    Go to the <a href="/">homepage</a> to join the queue.
+                </div>
+            </div>
+            <div class="panel panel-primary" id="currentstatus" hidden="hidden">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Cool, you're in the queue! 😎</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Hey <b><span id="csid"></span></b>, thanks for waiting.
+                        There are currently <b><span id="position" class="label label-primary"></span></b> students
+                        before you.
+                        Right now, the estimated waiting time is <span id="waittime"></span> minutes.</p>
+                </div>
+                <div class="panel-footer">
+                    <small>This view refreshes automatically every 5 seconds, no need to reload the page!</small>
+                </div>
+            </div>
         </div>
-        <hr/>
     </div>
-    <hr/><!-- row -->
+    <hr/>
+</div>
+<hr/><!-- row -->
 </div>
 
 </body>

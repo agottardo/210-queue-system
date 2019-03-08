@@ -17,6 +17,7 @@ func main() {
 	LoadDataFromDisk()
 
 	router := gin.New()
+
 	router.Use(gin.Logger())
 	router.Delims("{{", "}}")
 	router.SetFuncMap(template.FuncMap{
@@ -30,6 +31,7 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 	router.GET("/status", handleStatus)
+	router.POST("/status_for_id", handleStatusForID)
 	authorized := router.Group("/", gin.BasicAuth(gin.Accounts{
 		"210ta": "210ta",
 	}))
@@ -55,9 +57,13 @@ func handleJoinReq(c *gin.Context) {
 	}
 	if HasJoinedQueue(CSid) {
 		hpv := HomePageValues{Error: "You have already joined the queue! Click above to see your status."}
+		c.SetCookie("queue-csid", CSid, 0, "",
+			"", false, false)
 		c.HTML(http.StatusOK, "index.tmpl.html", hpv)
 		return
 	}
+	c.SetCookie("queue-csid", CSid, 0, "",
+		"localhost:8888", false, false)
 	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
 	jpv := JoinedPageValues{
 		AheadOfMe:         strconv.Itoa(aheadOfMe),
@@ -107,4 +113,14 @@ func handleServed(c *gin.Context) {
 
 func handleDump(c *gin.Context) {
 	c.File("persistence.json")
+}
+
+func handleStatusForID(c *gin.Context) {
+	CSid, err := c.Cookie("queue-csid")
+	if err != nil || CSid == "" || !IsValidCSid(CSid) {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+	isWaiting, position := QueuePositionForCSID(CSid)
+	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime()/60)})
 }
