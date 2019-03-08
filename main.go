@@ -63,7 +63,7 @@ func handleJoinReq(c *gin.Context) {
 		return
 	}
 	c.SetCookie("queue-csid", CSid, 0, "",
-		"localhost:8888", false, false)
+		"cpsc210queue.ugrad.cs.ubc.ca", true, false)
 	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
 	jpv := JoinedPageValues{
 		AheadOfMe:         strconv.Itoa(aheadOfMe),
@@ -122,5 +122,5 @@ func handleStatusForID(c *gin.Context) {
 		return
 	}
 	isWaiting, position := QueuePositionForCSID(CSid)
-	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime()/60)})
+	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime() / 60)})
 }
