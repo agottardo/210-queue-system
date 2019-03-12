@@ -1,3 +1,6 @@
 .env
 .docker_build/
 persistence.json
+authdb.json
+authdb.json
+.idea/workspace.xml

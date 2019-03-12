@@ -32,9 +32,7 @@ func main() {
 	})
 	router.GET("/status", handleStatus)
 	router.POST("/status_for_id", handleStatusForID)
-	authorized := router.Group("/", gin.BasicAuth(gin.Accounts{
-		"210ta": "210ta",
-	}))
+	authorized := router.Group("/", gin.BasicAuth(LoadPasswordsFromDisk()))
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
 	authorized.POST("/nuke", handleNuke)

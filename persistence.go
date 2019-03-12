@@ -41,3 +41,16 @@ func UpdateDiskCopy() {
 	}
 	log.Println("Updated persistence.json with new data.")
 }
+
+func LoadPasswordsFromDisk() map[string]string {
+	passwordsStore, err := ioutil.ReadFile("authdb.json")
+	if err != nil {
+		log.Fatalln("Couldn't read authdb.json. Create it before running this application.")
+	}
+	theMap := map[string]string{}
+	jsonerr := json.Unmarshal(passwordsStore, &theMap)
+	if jsonerr != nil {
+		log.Fatalln("I couldn't unmarshall authdb.json. The JSON syntax is probably bad.")
+	}
+	return theMap
+}
