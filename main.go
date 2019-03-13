@@ -106,7 +106,7 @@ func handleServed(c *gin.Context) {
 		return
 	}
 	ServeStudent(csid)
-	handleTAStatus(c)
+	c.Redirect(http.StatusMovedPermanently, "/ta")
 }
 
 func handleDump(c *gin.Context) {
