@@ -106,13 +106,14 @@ func NumTimesHelped(CSid string) int {
 }
 
 // EstimatedWaitTime returns the estimated wait time in seconds for a students that joins the
-// queue right now.
+// queue right now, based on served entries from the past 30 minutes.
 func EstimatedWaitTime() float64 {
+	thirtyMinsAgo := time.Now().Add(-30 * time.Minute)
 	var acc time.Duration
 	count := 0
 	queue.Mutex.Lock()
 	for _, entry := range queue.Entries {
-		if entry.WasServed {
+		if entry.WasServed && entry.ServedAt.After(thirtyMinsAgo) {
 			waitTime := entry.ServedAt.Sub(entry.JoinedAt)
 			acc += waitTime
 			count++
