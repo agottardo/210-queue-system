@@ -41,7 +41,7 @@ var queue = Queue{Entries: []QueueEntry{}}
 // If the student has requested help more than MaxNumTimesHelped,
 // returns how many times the students has asked for help already, and -1
 func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
-	timesHelped := NumTimesHelper(CSid)
+	timesHelped := NumTimesHelped(CSid)
 	if timesHelped < MaxNumTimesHelped {
 		entry := QueueEntry{CSid, name, taskInfo, time.Now(), false, time.Now()}
 		queue.Mutex.Lock()
