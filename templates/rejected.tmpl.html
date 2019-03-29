@@ -1,0 +1,20 @@
+<html>
+{{template "header.tmpl.html"}}
+<body>
+{{template "nav.tmpl.html"}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3><span class="glyphicon glyphicon-log-in"></span> You have not been added to the queue.</h3>
+            <p>You have already been helped {{.AheadOfMe}} in the past 24 hours. Please allow for other students
+                to receive help during office hours.
+            </p>
+        </div>
+        <hr/>
+    </div>
+    <hr/><!-- row -->
+</div>
+
+</body>
+</html>

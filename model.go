@@ -38,8 +38,11 @@ var queue = Queue{Entries: []QueueEntry{}}
 // JoinQueue adds the student with name and CSid to the queue.
 // Returns how many students are ahead of the new student in the queue,
 // and the estimated wait time in seconds.
+// If the student has requested help more than MaxNumTimesHelped,
+// returns how many times the students has asked for help already, and -1
 func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
-	if NumTimesHelper(CSid) < MaxNumTimesHelped {
+	timesHelped := NumTimesHelper(CSid)
+	if timesHelped < MaxNumTimesHelped {
 		entry := QueueEntry{CSid, name, taskInfo, time.Now(), false, time.Now()}
 		queue.Mutex.Lock()
 		// How many un-served students joined before me?
@@ -54,7 +57,7 @@ func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
 		queue.Mutex.Unlock()
 		return rsf, int(EstimatedWaitTime())
 	}
-	return -1, -1
+	return timesHelped, -1
 }
 
 // HasJoinedQueue returns true if the user with given CSid has joined the queue
