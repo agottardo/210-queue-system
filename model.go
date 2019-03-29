@@ -22,6 +22,10 @@ type QueueEntry struct {
 	ServedAt  time.Time
 }
 
+// MaxNumTimesHelped is a constant which represents the maximum number of
+// times a student can seek help within a 24 hour timeframe.
+const MaxNumTimesHelped = 5
+
 // Queue is the underlying thread-safe data structure (mutex + queue).
 type Queue struct {
 	Mutex   sync.Mutex   // To handle concurrency, prevents multiple users from touching the DS.
@@ -34,20 +38,26 @@ var queue = Queue{Entries: []QueueEntry{}}
 // JoinQueue adds the student with name and CSid to the queue.
 // Returns how many students are ahead of the new student in the queue,
 // and the estimated wait time in seconds.
+// If the student has requested help more than MaxNumTimesHelped,
+// returns how many times the students has asked for help already, and -1
 func JoinQueue(name string, CSid string, taskInfo string) (int, int) {
-	entry := QueueEntry{CSid, name, taskInfo, time.Now(), false, time.Now()}
-	queue.Mutex.Lock()
-	// How many un-served students joined before me?
-	rsf := 0
-	for _, entry := range queue.Entries {
-		if !entry.WasServed {
-			rsf++
+	timesHelped := NumTimesHelped(CSid)
+	if timesHelped < MaxNumTimesHelped {
+		entry := QueueEntry{CSid, name, taskInfo, time.Now(), false, time.Now()}
+		queue.Mutex.Lock()
+		// How many un-served students joined before me?
+		rsf := 0
+		for _, entry := range queue.Entries {
+			if !entry.WasServed {
+				rsf++
+			}
 		}
+		queue.Entries = append(queue.Entries, entry)
+		UpdateDiskCopy()
+		queue.Mutex.Unlock()
+		return rsf, int(EstimatedWaitTime())
 	}
-	queue.Entries = append(queue.Entries, entry)
-	UpdateDiskCopy()
-	queue.Mutex.Unlock()
-	return rsf, int(EstimatedWaitTime())
+	return timesHelped, -1
 }
 
 // HasJoinedQueue returns true if the user with given CSid has joined the queue

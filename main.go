@@ -1,14 +1,13 @@
 package main
 
 import (
+	"github.com/dustin/go-humanize"
+	"github.com/gin-gonic/gin"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/dustin/go-humanize"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -63,14 +62,22 @@ func handleJoinReq(c *gin.Context) {
 	c.SetCookie("queue-csid", CSid, 0, "",
 		"cpsc210queue.ugrad.cs.ubc.ca", true, false)
 	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
-	jpv := JoinedPageValues{
-		AheadOfMe:         strconv.Itoa(aheadOfMe),
-		HasEstimate:       waitTime != 0,
-		EstimatedWaitTime: strconv.Itoa(waitTime/60) + " minutes",
-		JoinedAt:          time.Now().String(),
-		Name:              name,
+	if waitTime != -1 {
+		jpv := JoinedPageValues{
+			AheadOfMe:         strconv.Itoa(aheadOfMe),
+			HasEstimate:       waitTime != 0,
+			EstimatedWaitTime: strconv.Itoa(waitTime/60) + " minutes",
+			JoinedAt:          time.Now().String(),
+			Name:              name,
+		}
+		c.HTML(http.StatusOK, "joined.tmpl.html", jpv)
+	} else {
+		rpv := RejectedPageValues{
+			NumTimesJoined: aheadOfMe,
+			Name:           name,
+		}
+		c.HTML(http.StatusOK, "rejected.tmpl.html", rpv)
 	}
-	c.HTML(http.StatusOK, "joined.tmpl.html", jpv)
 }
 
 func handleStatus(c *gin.Context) {

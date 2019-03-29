@@ -14,6 +14,12 @@ type JoinedPageValues struct {
 	Name              string
 }
 
+// RejectedPageValues represents the values used in the queue rejected page
+type RejectedPageValues struct {
+	NumTimesJoined int
+	Name           string
+}
+
 // StatusPageValues represents the values used in the "current queue status" page.
 type StatusPageValues struct {
 	Entries []QueueEntry
