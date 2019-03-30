@@ -14,32 +14,42 @@
             <div class="card">
                 <h5 class="card-header"><i class="fas fa-sign-in-alt"></i> Join the queue here</h5>
                 <div class="card-body">
+                    <div class="alert alert-danger" role="alert" id="closedNotice">
+                        <small><i class="far fa-clock"></i>
+                            The queue is currently <b>closed</b>. Please wait for a TA
+                            to open it.
+                        </small>
+                    </div>
                     <form method="post" action="/join">
-                        <div class="form-group">
-                            <label for="name">Your name</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="First name" required>
-                            <small id="nameHelp" class="form-text text-muted">The TA will call this name.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="csid">UBC CS ID</label>
-                            <input type="text" class="form-control" id="csid" name="csid"
-                                   placeholder="For instance, 'a1b6c'" maxlength="5" required>
-                            <small id="emailHelp" class="form-text text-muted">Don't have one? Go <a
-                                        href="https://www.cs.ubc.ca/getacct/">here</a>.
-                            </small>
-                        </div>
-                        <div class="form-group">
-                            <label for="task">What do you need help with?</label>
-                            <input type="text" class="form-control" id="task" name="task"
-                                   placeholder="For instance, 'Can't fix NullPointerException'" required>
-                            <small id="emailHelp" class="form-text text-muted">Try to be specific: we use this to match
-                                you
-                                with the right TA for your question.
-                            </small>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Join the queue! <i class="fas fa-laugh-beam"></i>
-                        </button>
+                        <fieldset id="joinForm">
+                            <div class="form-group">
+                                <label for="name">Your name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                       placeholder="First name" required>
+                                <small id="nameHelp" class="form-text text-muted">The TA will call this name.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="csid">UBC CS ID</label>
+                                <input type="text" class="form-control" id="csid" name="csid"
+                                       placeholder="For instance, 'a1b6c'" maxlength="5" required>
+                                <small id="emailHelp" class="form-text text-muted">Don't have one? Go <a
+                                            href="https://www.cs.ubc.ca/getacct/">here</a>.
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="task">What do you need help with?</label>
+                                <input type="text" class="form-control" id="task" name="task"
+                                       placeholder="For instance, 'Can't fix NullPointerException'" required>
+                                <small id="emailHelp" class="form-text text-muted">Try to be specific: we use this to
+                                    match
+                                    you
+                                    with the right TA for your question.
+                                </small>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="joinButton">Join the queue! <i
+                                        class="fas fa-laugh-beam"></i>
+                            </button>
+                        </fieldset>
                     </form>
                 </div>
             </div>
@@ -62,6 +72,37 @@
     </div>
     {{template "footer.tmpl.html"}}
 </div>
+
+<script type="text/javascript">
+    function getQueueStatus() {
+        let xhr = new XMLHttpRequest();
+        const url = "/isqueueopen";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                const button = document.getElementById("joinButton");
+                const fieldset = document.getElementById("joinForm");
+                const closedNotice = document.getElementById("closedNotice");
+                const json = JSON.parse(xhr.responseText);
+                const isOpen = (json.open === true);
+                if (isOpen) {
+                    closedNotice.hidden = true;
+                    fieldset.disabled = false;
+                } else {
+                    closedNotice.hidden = false;
+                    fieldset.disabled = true;
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    getQueueStatus();
+    window.setInterval(function () {
+        getQueueStatus();
+    }, 5000);
+</script>
 
 </body>
 </html>

@@ -26,10 +26,11 @@ type QueueEntry struct {
 type Queue struct {
 	Mutex   sync.Mutex   // To handle concurrency, prevents multiple users from touching the DS.
 	Entries []QueueEntry // Contains the actual tickets.
+	IsOpen  bool         // Whether the queue is open or closed.
 }
 
 // Main in-memory data structure.
-var queue = Queue{Entries: []QueueEntry{}}
+var queue = Queue{Entries: []QueueEntry{}, IsOpen: false}
 
 // JoinQueue adds the student with name and CSid to the queue.
 // Returns how many students are ahead of the new student in the queue,
@@ -165,4 +166,27 @@ func TotalNumStudentsHelped() uint {
 	tot := uint(len(queue.Entries))
 	queue.Mutex.Unlock()
 	return tot
+}
+
+// Returns whether the queue is open.
+func IsQueueOpen() bool {
+	queue.Mutex.Lock()
+	result := queue.IsOpen
+	queue.Mutex.Unlock()
+	return result
+}
+
+// Opens the queue, letting students join it.
+func OpenQueue() {
+	queue.Mutex.Lock()
+	queue.IsOpen = true
+	queue.Mutex.Unlock()
+}
+
+// Closes the queue, preventing students from joining.
+// Closing the queue does not kick existing students out.
+func CloseQueue() {
+	queue.Mutex.Lock()
+	queue.IsOpen = false
+	queue.Mutex.Unlock()
 }

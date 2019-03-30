@@ -11,14 +11,11 @@ import (
 var config Config
 
 func main() {
-	port := "8888"
 
 	config = ReadConfig()
-
 	LoadDataFromDisk()
 
 	router := gin.New()
-
 	router.Use(gin.Logger())
 	router.Delims("{{", "}}")
 	router.SetFuncMap(template.FuncMap{
@@ -27,23 +24,27 @@ func main() {
 	})
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
-
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", HomePageValues{TotalNumStudentsHelped(), ""})
-	})
+	router.GET("/", handleIndex)
 	router.GET("/status", handleStatus)
 	router.POST("/status_for_id", handleStatusForID)
 	router.GET("/leaveearly", handleLeave)
+	router.POST("/isqueueopen", handleIsQueueOpen)
 	authorized := router.Group("/", gin.BasicAuth(LoadPasswordsFromDisk()))
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
 	authorized.POST("/nuke", handleNuke)
 	authorized.GET("/jsondump", handleDump)
+	authorized.POST("/openqueue", handleOpenQueue)
+	authorized.POST("/closequeue", handleCloseQueue)
 	router.POST("/join", handleJoinReq)
-	err := router.Run(":" + port)
+	err := router.Run(":" + config.ListenAt)
 	if err != nil {
 		log.Fatalln("Listening on port failed with error:", err)
 	}
+}
+
+func handleIndex(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.tmpl.html", HomePageValues{TotalNumStudentsHelped(), ""})
 }
 
 func handleJoinReq(c *gin.Context) {
@@ -133,6 +134,30 @@ func handleStatusForID(c *gin.Context) {
 	CSid := getCSIDFromCookie(c)
 	isWaiting, position := QueuePositionForCSID(CSid)
 	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime() / 60)})
+}
+
+func handleIsQueueOpen(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"open": IsQueueOpen(),
+	})
+}
+
+func handleOpenQueue(c *gin.Context) {
+	queue.Mutex.Lock()
+	OpenQueue()
+	queue.Mutex.Unlock()
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+	})
+}
+
+func handleCloseQueue(c *gin.Context) {
+	queue.Mutex.Lock()
+	CloseQueue()
+	queue.Mutex.Unlock()
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+	})
 }
 
 func getCSIDFromCookie(c *gin.Context) string {
