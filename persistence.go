@@ -15,9 +15,9 @@ func LoadDataFromDisk() {
 	if err != nil {
 		log.Println("Couldn't read persistence.json. Perhaps, this is the first time the application is running?")
 	} else {
-		jsonerr := json.Unmarshal(jsonStore, &queue)
-		if jsonerr != nil {
-			log.Println("Couldn't unmarshal persistence.json. This is likely the result of data corruption.", jsonerr)
+		jsonErr := json.Unmarshal(jsonStore, &queue)
+		if jsonErr != nil {
+			log.Println("Couldn't unmarshal persistence.json. This is likely the result of data corruption.", jsonErr)
 			log.Println("210queue is starting with a fresh new datastore.")
 		} else {
 			log.Println("Restarting with data from persistence.json.")
@@ -48,9 +48,42 @@ func LoadPasswordsFromDisk() map[string]string {
 		log.Fatalln("Couldn't read authdb.json. Create it before running this application.")
 	}
 	theMap := map[string]string{}
-	jsonerr := json.Unmarshal(passwordsStore, &theMap)
-	if jsonerr != nil {
-		log.Fatalln("I couldn't unmarshall authdb.json. The JSON syntax is probably bad.")
+	jsonErr := json.Unmarshal(passwordsStore, &theMap)
+	if jsonErr != nil {
+		log.Fatalln("I couldn't unmarshal authdb.json. The JSON syntax is probably bad.")
 	}
 	return theMap
+}
+
+// A type that stores the application configuration.
+type Config struct {
+	MaxNumTimesHelped uint
+	AuthSecret        string
+}
+
+// Reads the system configuration from the config.json file.
+func ReadConfig() Config {
+
+	config := Config{}
+	configStore, err := ioutil.ReadFile("config.json")
+	if err != nil {
+		log.Fatalln("Couldn't read config.json. Create and fill it before running this application.")
+	}
+	theMap := map[string]interface{}{}
+	jsonErr := json.Unmarshal(configStore, &theMap)
+	if jsonErr != nil {
+		log.Fatalln("I couldn't unmarshal config.json. The JSON syntax is probably bad.")
+	}
+
+	// AuthSecret is a random string that is used when hashing CSids and
+	// storing them in a cookie.
+	// This kind of crypto is used to ensure that only whoever joined
+	// the queue can actually leave it manually (/leaveearly).
+	config.AuthSecret = theMap["AuthSecret"].(string)
+
+	// MaxNumTimesHelped is a constant which represents the maximum number of
+	// times a student can seek help within a 24 hour timeframe.
+	config.MaxNumTimesHelped = uint(theMap["MaxNumTimesHelped"].(float64))
+
+	return config
 }

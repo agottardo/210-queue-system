@@ -6,12 +6,14 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"strconv"
-	"time"
 )
+
+var config Config
 
 func main() {
 	port := "8888"
+
+	config = ReadConfig()
 
 	LoadDataFromDisk()
 
@@ -27,10 +29,11 @@ func main() {
 	router.Static("/static", "static")
 
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+		c.HTML(http.StatusOK, "index.tmpl.html", HomePageValues{TotalNumStudentsHelped(), ""})
 	})
 	router.GET("/status", handleStatus)
 	router.POST("/status_for_id", handleStatusForID)
+	router.GET("/leaveearly", handleLeave)
 	authorized := router.Group("/", gin.BasicAuth(LoadPasswordsFromDisk()))
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
@@ -61,16 +64,11 @@ func handleJoinReq(c *gin.Context) {
 	}
 	c.SetCookie("queue-csid", CSid, 0, "",
 		"cpsc210queue.ugrad.cs.ubc.ca", true, false)
+	c.SetCookie("queue-secret", GenerateSecretForCSid(CSid), 0, "",
+		"cpsc210queue.ugrad.cs.ubc.ca", true, false)
 	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
 	if waitTime != -1 {
-		jpv := JoinedPageValues{
-			AheadOfMe:         strconv.Itoa(aheadOfMe),
-			HasEstimate:       waitTime != 0,
-			EstimatedWaitTime: strconv.Itoa(waitTime/60) + " minutes",
-			JoinedAt:          time.Now().String(),
-			Name:              name,
-		}
-		c.HTML(http.StatusOK, "joined.tmpl.html", jpv)
+		c.HTML(http.StatusOK, "status.tmpl.html", nil)
 	} else {
 		rpv := RejectedPageValues{
 			NumTimesJoined: aheadOfMe,
@@ -81,8 +79,7 @@ func handleJoinReq(c *gin.Context) {
 }
 
 func handleStatus(c *gin.Context) {
-	spv := StatusPageValues{UnservedEntries()}
-	c.HTML(http.StatusOK, "status.tmpl.html", spv)
+	c.HTML(http.StatusOK, "status.tmpl.html", nil)
 }
 
 func handleNuke(c *gin.Context) {
@@ -116,16 +113,33 @@ func handleServed(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, "/ta")
 }
 
+func handleLeave(c *gin.Context) {
+	CSid, err := c.Cookie("queue-csid")
+	secret, err := c.Cookie("queue-secret")
+	if err != nil || CSid == "" || !IsValidCSid(CSid) ||
+		!CheckSecretForCSid(secret, CSid) {
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+	ServeStudent(CSid)
+	c.Redirect(http.StatusMovedPermanently, "/status")
+}
+
 func handleDump(c *gin.Context) {
 	c.File("persistence.json")
 }
 
 func handleStatusForID(c *gin.Context) {
+	CSid := getCSIDFromCookie(c)
+	isWaiting, position := QueuePositionForCSID(CSid)
+	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime() / 60)})
+}
+
+func getCSIDFromCookie(c *gin.Context) string {
 	CSid, err := c.Cookie("queue-csid")
 	if err != nil || CSid == "" || !IsValidCSid(CSid) {
 		c.AbortWithStatus(http.StatusBadRequest)
-		return
+		return ""
 	}
-	isWaiting, position := QueuePositionForCSID(CSid)
-	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime() / 60)})
+	return CSid
 }

@@ -1,0 +1,21 @@
+/* Guess what? Nothing here. */
+nav {
+    margin-bottom: 1em;
+}
+
+.counter {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    margin-top: 10px;
+    border: 1px solid rgba(0, 0, 0, .125);
+    background-color: #f8f9fa !important;
+}
+
+.counter-num {
+    font-size: xx-large;
+    color: black;
+    margin-bottom: 0;
+}
+
+.counter-desc {
+    color: #4e555b;
+}

@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 {{template "header.tmpl.html"}}
 <body>
 {{template "nav.tmpl.html"}}
@@ -6,10 +6,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3><i class="fas fa-user-md"></i> TA admin panel</h3>
+            <h5><i class="fas fa-user-md"></i> TA admin panel</h5>
 
-
-            <table class="table">
+            <table class="table table-sm table-striped">
                 <thead>
                 <tr>
                     <th scope="col">&nbsp;</th>
@@ -25,7 +24,7 @@
                         <td>
                             <form action="/served" method="post">
                                 <input type="hidden" name="csid" value="{{ .CSid }}">
-                                <button type="submit" class="btn btn-success btn-xs"><i
+                                <button type="submit" class="btn btn-success btn-sm"><i
                                             class="fas fa-hands-helping"></i> Now Serving
                                 </button>
                             </form>
@@ -39,13 +38,13 @@
                 </tbody>
             </table>
             <div align="center">
-                <a class="btn btn-default btn-primary btn-xs" href="/ta" role="button"><i
+                <a class="btn btn-default btn-primary btn-sm" href="/ta" role="button"><i
                             class="fas fa-sync-alt"></i>
                     Force refresh</a>
             </div>
         </div>
     </div>
-    <hr/><!-- row -->
+    {{template "footer.tmpl.html"}}
 </div>
 
 </body>

@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 {{template "header.tmpl.html"}}
 <body>
 {{template "nav.tmpl.html"}}
@@ -10,41 +10,57 @@
         </div>
     {{- end}}
     <div class="row">
-        <div class="col-md-6">
-            <h3><span class="glyphicon glyphicon-log-in"></span> Join the queue!</h3>
-            <form method="post" action="/join">
-                <div class="form-group">
-                    <label for="name">Your name</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                           placeholder="First name" required>
+        <div class="col-sm">
+            <div class="card">
+                <h5 class="card-header"><i class="fas fa-sign-in-alt"></i> Join the queue here</h5>
+                <div class="card-body">
+                    <form method="post" action="/join">
+                        <div class="form-group">
+                            <label for="name">Your name</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   placeholder="First name" required>
+                            <small id="nameHelp" class="form-text text-muted">The TA will call this name.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="csid">UBC CS ID</label>
+                            <input type="text" class="form-control" id="csid" name="csid"
+                                   placeholder="For instance, 'a1b6c'" maxlength="5" required>
+                            <small id="emailHelp" class="form-text text-muted">Don't have one? Go <a
+                                        href="https://www.cs.ubc.ca/getacct/">here</a>.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="task">What do you need help with?</label>
+                            <input type="text" class="form-control" id="task" name="task"
+                                   placeholder="For instance, 'Can't fix NullPointerException'" required>
+                            <small id="emailHelp" class="form-text text-muted">Try to be specific: we use this to match
+                                you
+                                with the right TA for your question.
+                            </small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Join the queue! <i class="fas fa-laugh-beam"></i>
+                        </button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="csid">UBC CS ID</label>
-                    <input type="text" class="form-control" id="csid" name="csid"
-                           placeholder="For instance, 'a1b1c1'" maxlength="5" required>
-                </div>
-                <div class="form-group">
-                    <label for="task">What do you need help with?</label>
-                    <input type="text" class="form-control" id="task" name="task"
-                           placeholder="For instance, 'Task 2 - parsing'" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Join the queue</button>
-            </form>
-
+            </div>
         </div>
-        <div class="col-md-6">
-            <h3><span class="glyphicon glyphicon-info-sign"></span> What is this tool for?</h3>
-            <p>Hello CPSC 210 student!</p>
-            <p>This tool lets you sign up for TA help during scheduled labs and office hours. Labs in CPSC 210 operate
-                on a
-                first-come, first-served basis, however we will give priority to students who have not received help
-                from a
-                course staff member yet.</p>
-            <p>To join the queue, please fill the form on this page.</p>
+        <div class="col-sm">
+            <div class="card bg-light">
+                <h5 class="card-header"><i class="fas fa-question-circle"></i> What is this tool for?</h5>
+                <div class="card-body">
+                    <p class="card-text">Welcome to the <b>CPSC 210 Queue System</b>.</p>
+                    <p class="card-text">This tool lets you sign up for TA help during scheduled labs and office hours.
+                        Labs in CPSC 210 operate on a first-come, first-served basis, however we will give priority to
+                        students who haven't yet received help from a course staff member.</p>
+                </div>
+            </div>
+            <div class="counter">
+                <p class="text-center counter-num">{{ .CountHelped }}</p>
+                <p class="text-center counter-desc">students helped this term</p>
+            </div>
         </div>
-        <hr/>
     </div>
-    <hr/><!-- row -->
+    {{template "footer.tmpl.html"}}
 </div>
 
 </body>
