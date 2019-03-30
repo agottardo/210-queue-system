@@ -143,18 +143,14 @@ func handleIsQueueOpen(c *gin.Context) {
 }
 
 func handleOpenQueue(c *gin.Context) {
-	queue.Mutex.Lock()
 	OpenQueue()
-	queue.Mutex.Unlock()
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 	})
 }
 
 func handleCloseQueue(c *gin.Context) {
-	queue.Mutex.Lock()
 	CloseQueue()
-	queue.Mutex.Unlock()
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 	})
