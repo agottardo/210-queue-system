@@ -116,7 +116,12 @@ func handleDump(c *gin.Context) {
 func handleStatusForID(c *gin.Context) {
 	CSid := getCSIDFromCookie(c)
 	isWaiting, position := QueuePositionForCSID(CSid)
-	c.JSON(http.StatusOK, map[string]interface{}{"success": isWaiting, "csid": CSid, "position": position, "waittime": uint(EstimatedWaitTime() / 60)})
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"success":  isWaiting,
+		"csid":     CSid,
+		"position": position,
+		"waittime": uint(EstimatedWaitTime() / 60),
+	})
 }
 
 func handleIsQueueOpen(c *gin.Context) {
