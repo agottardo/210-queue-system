@@ -48,18 +48,6 @@
 			"revisionTime": "2019-02-05T22:20:52Z"
 		},
 		{
-			"checksumSHA1": "MFkrEy77SoBbEtLd3Ros+NZO35w=",
-			"path": "github.com/heroku/x/hmetrics",
-			"revision": "705849e307dd75c91728463dea5bfd08ef493e64",
-			"revisionTime": "2017-10-04T17:02:40Z"
-		},
-		{
-			"checksumSHA1": "GOeW0t8PSBNHFTUHmdSgPv2kl/0=",
-			"path": "github.com/heroku/x/hmetrics/onload",
-			"revision": "705849e307dd75c91728463dea5bfd08ef493e64",
-			"revisionTime": "2017-10-04T17:02:40Z"
-		},
-		{
 			"checksumSHA1": "2JH1DF82SAPY1JzD1iG4U7GZUcQ=",
 			"path": "github.com/json-iterator/go",
 			"revision": "5bc93205020f6311d7e4a34f82c5616a18ec35e5",
@@ -69,12 +57,6 @@
 			"checksumSHA1": "ZUOd8OUOp+xdpB7p4w/O86Y8wyc=",
 			"path": "github.com/manucorporat/sse",
 			"revision": "c142f0f1baea5cef7f98a8a6c222f6134368c1f5"
-		},
-		{
-			"checksumSHA1": "SEnjvwVyfuU2xBaOfXfwPD5MZqk=",
-			"path": "github.com/mattn/go-colorable",
-			"revision": "efa589957cd060542a26d2dd7832fd6a6c6c3ade",
-			"revisionTime": "2018-03-10T13:32:14Z"
 		},
 		{
 			"checksumSHA1": "GiVgQkx5acnq+JZtYiuHPlhHoso=",
@@ -107,6 +89,24 @@
 			"revisionTime": "2018-02-14T08:18:26Z"
 		},
 		{
+			"checksumSHA1": "75vFDLc1JCj1L1/3DjLMZzvH64w=",
+			"path": "github.com/yl2chen/cidranger/net",
+			"revision": "928b519e5268fe386d0f7decce320205cc09ca95",
+			"revisionTime": "2018-02-14T08:18:26Z"
+		},
+		{
+			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "8dd112bcdc25174059e45e07517d9fc663123347",
+			"revisionTime": "2019-02-28T09:13:53Z"
+		},
+		{
+			"checksumSHA1": "q+XI9g44wd9mYvf3S5Wo8YZjAus=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "8dd112bcdc25174059e45e07517d9fc663123347",
+			"revisionTime": "2019-02-28T09:13:53Z"
+		},
+		{
 			"checksumSHA1": "hKZGpbFuCrkE4s1vxubKK1aFlfI=",
 			"path": "golang.org/x/net/context",
 			"revision": "d9558e5c97f85372afee28cf2b6059d7d3818919"
@@ -116,24 +116,6 @@
 			"path": "golang.org/x/sys/unix",
 			"revision": "983097b1a8a340cd1cc7df17d735154d89e10b1a",
 			"revisionTime": "2019-02-13T08:58:22Z"
-		},
-		{
-			"checksumSHA1": "P7dBpV3QA/3GJWGNwb9Hn3BzCQs=",
-			"comment": "v5.9.1",
-			"path": "gopkg.in/bluesuncorp/validator.v5",
-			"revision": "d627af88ac021317a280d320986282a6dc97549a"
-		},
-		{
-			"checksumSHA1": "P/k5ZGf0lEBgpKgkwy++F7K1PSg=",
-			"path": "gopkg.in/go-playground/validator.v8",
-			"revision": "5f1438d3fca68893a817e4a66806cea46a9e4ebf",
-			"revisionTime": "2017-07-30T05:02:35Z"
-		},
-		{
-			"checksumSHA1": "QqDq2x8XOU7IoOR98Cx1eiV5QY8=",
-			"path": "gopkg.in/yaml.v2",
-			"revision": "51d6538a90f86fe93ac480b35f37b2be17fef232",
-			"revisionTime": "2018-11-15T11:05:04Z"
 		}
 	],
 	"rootPath": "github.com/agottardo/210-queue-system"

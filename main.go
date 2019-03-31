@@ -37,7 +37,6 @@ func main() {
 	authorized := router.Group("/", gin.BasicAuth(LoadPasswordsFromDisk()))
 	authorized.GET("/ta", handleTAStatus)
 	authorized.POST("/served", handleServed)
-	authorized.POST("/nuke", handleNuke)
 	authorized.GET("/jsondump", handleDump)
 	router.POST("/join", handleJoinReq)
 	err := router.Run(":" + port)
@@ -80,22 +79,6 @@ func handleJoinReq(c *gin.Context) {
 
 func handleStatus(c *gin.Context) {
 	c.HTML(http.StatusOK, "status.tmpl.html", nil)
-}
-
-func handleNuke(c *gin.Context) {
-	confirm, _ := c.GetPostForm("confirm")
-	if confirm == "true" {
-		NukeAllTheThings(c.Request.RemoteAddr)
-		c.JSON(http.StatusAccepted, gin.H{
-			"success":       true,
-			"nukedDatabase": true,
-		})
-		return
-	}
-	c.JSON(http.StatusAccepted, gin.H{
-		"success":       false,
-		"nukedDatabase": false,
-	})
 }
 
 func handleTAStatus(c *gin.Context) {
