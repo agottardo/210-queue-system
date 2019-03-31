@@ -1,0 +1,5 @@
+{
+  "ListenAt": "8888",
+  "MaxNumTimesHelped": 5,
+  "AuthSecret": "theDefaultSecret"
+}
