@@ -56,15 +56,11 @@ func handleJoinReq(c *gin.Context) {
 	}
 	if HasJoinedQueue(CSid) {
 		hpv := HomePageValues{Error: "You have already joined the queue! Click above to see your status."}
-		c.SetCookie("queue-csid", CSid, 0, "",
-			"", false, false)
 		c.HTML(http.StatusOK, "index.tmpl.html", hpv)
 		return
 	}
-	c.SetCookie("queue-csid", CSid, 0, "",
-		"cpsc210queue.ugrad.cs.ubc.ca", true, false)
-	c.SetCookie("queue-secret", GenerateSecretForCSid(CSid), 0, "",
-		"cpsc210queue.ugrad.cs.ubc.ca", true, false)
+	c.SetCookie("queue-csid", CSid, 0, "", "", false, false)
+	c.SetCookie("queue-secret", GenerateSecretForCSid(CSid), 0, "", "", false, false)
 	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
 	if waitTime != -1 {
 		c.HTML(http.StatusOK, "status.tmpl.html", nil)
@@ -125,7 +121,8 @@ func handleStatusForID(c *gin.Context) {
 
 func getCSIDFromCookie(c *gin.Context) string {
 	CSid, err := c.Cookie("queue-csid")
-	if err != nil || CSid == "" || !IsValidCSid(CSid) {
+	secret, err1 := c.Cookie("queue-secret")
+	if err != nil || err1 != nil || CSid == "" || !IsValidCSid(CSid) || !CheckSecretForCSid(secret, CSid) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return ""
 	}
