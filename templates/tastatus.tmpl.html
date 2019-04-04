@@ -6,6 +6,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <div class="float-right">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" onclick="onSwitchChanged()">
+                    <label class="custom-control-label" for="customSwitch1" id="queueStatus">Queue is closed</label>
+                </div>
+            </div>
             <h5><i class="fas fa-user-md"></i> TA admin panel</h5>
 
             <table class="table table-sm table-striped">
@@ -46,6 +52,71 @@
     </div>
     {{template "footer.tmpl.html"}}
 </div>
+<script type="text/javascript">
+
+    function getQueueStatus() {
+        let xhr = new XMLHttpRequest();
+        const url = "/isqueueopen";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                const checkbox = document.getElementById("customSwitch1");
+                const json = JSON.parse(xhr.responseText);
+                const isOpen = (json.open === true);
+                if (isOpen) {
+                    checkbox.checked = true;
+                    document.getElementById("queueStatus").innerText = "Queue is open";
+                } else {
+                    checkbox.checked = false;
+                    document.getElementById("queueStatus").innerText = "Queue is closed";
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function onSwitchChanged() {
+        const checkbox = document.getElementById("customSwitch1");
+        callOpenClose(checkbox.checked === true);
+    }
+
+    function callOpenClose(open) {
+        let xhr = new XMLHttpRequest();
+        let url;
+        if (open) {
+            url = "/openqueue";
+        } else {
+            url = "/closequeue";
+        }
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            console.log("Sent request to server.");
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                const json = JSON.parse(xhr.responseText);
+                if (json.success === true) {
+                    alert("Queue status changed successfully.");
+                    if (open) {
+                        url = "/openqueue";
+                        document.getElementById("queueStatus").innerText = "Queue is open";
+                    } else {
+                        url = "/closequeue";
+                        document.getElementById("queueStatus").innerText = "Queue is closed";
+                    }
+                } else {
+                    alert("Unable to change queue status.");
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    getQueueStatus();
+    window.setInterval(function () {
+        getQueueStatus();
+    }, 5000);
+</script>
 {{template "scripts.tmpl.html"}}
 </body>
 </html>

@@ -57,8 +57,9 @@ func LoadPasswordsFromDisk() map[string]string {
 
 // A type that stores the application configuration.
 type Config struct {
-	MaxNumTimesHelped uint
+	ListenAt          string
 	AuthSecret        string
+	MaxNumTimesHelped uint
 }
 
 // Reads the system configuration from the config.json file.
@@ -74,6 +75,10 @@ func ReadConfig() Config {
 	if jsonErr != nil {
 		log.Fatalln("I couldn't unmarshal config.json. The JSON syntax is probably bad.")
 	}
+
+	// ListenAt is the HTTP port the web-server should listen at for incoming
+	// connections.
+	config.ListenAt = theMap["ListenAt"].(string)
 
 	// AuthSecret is a random string that is used when hashing CSids and
 	// storing them in a cookie.
