@@ -59,8 +59,8 @@ func handleJoinReq(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl.html", hpv)
 		return
 	}
-	c.SetCookie("queue-csid", CSid, 0, "", "", false, false)
-	c.SetCookie("queue-secret", GenerateSecretForCSid(CSid), 0, "", "", false, false)
+	c.SetCookie("queue-csid", CSid, 0, "", "", true, false)
+	c.SetCookie("queue-secret", GenerateSecretForCSid(CSid), 0, "", "", true, false)
 	aheadOfMe, waitTime := JoinQueue(name, CSid, taskInfo)
 	if waitTime != -1 {
 		c.HTML(http.StatusOK, "status.tmpl.html", nil)
