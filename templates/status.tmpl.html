@@ -2,7 +2,42 @@
 {{template "header.tmpl.html"}}
 <body>
 {{template "nav.tmpl.html"}}
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <br/>
+            <div class="card border-warning" id="notwaiting" hidden="hidden">
+                <h5 class="card-header bg-warning"><i class="fas fa-exclamation-triangle"></i> You're not in
+                    the queue.</h5>
+                <p class="card-body">Go to the <a href="/">homepage</a> to join the queue.</p>
+            </div>
+            <div class="card border-info" id="currentstatus" hidden="hidden">
+                <h5 class="card-header bg-info text-white"><i class="fas fa-smile"></i> Cool, you're in the queue!</h5>
+                <div class="card-body">
+                    <p>Hey <b><span id="csid"></span></b>, thanks for waiting.
+                        There are currently <b>
+                            <mark id="position"></mark>
+                        </b> students
+                        before you.
+                        Your estimated waiting time is <b>
+                            <mark id="waittime"></mark>
+                        </b> minutes.
+                    </p>
+                    <p><a href="/leaveearly">
+                            <button type="button" class="btn btn-danger"><i class="fas fa-door-open"></i> Exit the queue
+                                now
+                            </button>
+                        </a></p>
+                    <p class="small text-muted">This view refreshes automatically every 5 seconds, no need to
+                        reload the page! Do not close this browser window to keep track of your position.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "footer.tmpl.html"}}
+</div>
 
+{{template "scripts.tmpl.html"}}
 <script type="text/javascript">
 
     function deleteCookie(name) {
@@ -29,6 +64,9 @@
         var username = getCookie("queue-csid");
         if (username !== "") {
             fillPosition();
+        } else {
+            document.getElementById("notwaiting").hidden = false;
+            document.getElementById("currentstatus").hidden = true;
         }
     }
 
@@ -63,41 +101,6 @@
         checkCookie();
     }, 5000);
 </script>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <br/>
-            <div class="card border-warning" id="notwaiting">
-                <h5 class="card-header bg-warning"><i class="fas fa-exclamation-triangle"></i> You're not in
-                    the queue.</h5>
-                <p class="card-body">Go to the <a href="/">homepage</a> to join the queue.</p>
-            </div>
-            <div class="card border-info" id="currentstatus" hidden="hidden">
-                <h5 class="card-header bg-info text-white"><i class="fas fa-smile"></i> Cool, you're in the queue!</h5>
-                <div class="card-body">
-                    <p>Hey <b><span id="csid"></span></b>, thanks for waiting.
-                        There are currently <b>
-                            <mark id="position"></mark>
-                        </b> students
-                        before you.
-                        Your estimated waiting time is <b>
-                            <mark id="waittime"></mark>
-                        </b> minutes.
-                    </p>
-                    <p><a href="/leaveearly">
-                            <button type="button" class="btn btn-danger"><i class="fas fa-door-open"></i> Exit the queue
-                                now
-                            </button>
-                        </a></p>
-                    <p class="small text-muted">This view refreshes automatically every 5 seconds, no need to
-                        reload the page! Do not close this browser window to keep track of your position.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{template "footer.tmpl.html"}}
-</div>
 
 </body>
 </html>
